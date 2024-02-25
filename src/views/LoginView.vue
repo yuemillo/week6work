@@ -28,37 +28,38 @@
           </p>
         </div>
   </template>
-  
-  <script>
-  import axios from 'axios';
-  
-  const { VITE_URL } = import.meta.env;
-  
-  export default {
-    data() {
-      return {
-        user: {
-          username: '',
-          password: '',
-        },
-      };
-    },
-    methods: {
-      login() {
-        const url = `${VITE_URL}/admin/signin`;
-        axios.post(url, this.user)
-          .then((response) => {
-            const { token, expired } = response.data;
-            // 寫入cookie
-            document.cookie = `hexToken=${token};expires=${new Date(expired)}; path=/`;
-            this.$router.push('/admin/products');
-            // window.location = 'products.html';
-          })
-          .catch((err) => {
-            alert(err.data.message);
-            this.$router.push('/login');
-          });
-      },
-    },
-  };
-  </script>
+
+<script>
+import axios from 'axios'
+
+const { VITE_URL } = import.meta.env
+// 環境變數
+
+export default {
+  data () {
+    return {
+      user: {
+        username: '',
+        password: ''
+      }
+    }
+  },
+  methods: {
+    login () {
+      const url = `${VITE_URL}/v2/admin/signin`
+      axios.post(url, this.user)
+        .then((response) => {
+          const { token, expired } = response.data
+          // 寫入cookie
+          document.cookie = `hexToken=${token};expires=${new Date(expired)}; path=/`
+          this.$router.push('/admin/products')
+          // 用router登入完成切換頁面
+        })
+        .catch((err) => {
+          alert(err.data.message)
+          this.$router.push('/login')
+        })
+    }
+  }
+}
+</script>
